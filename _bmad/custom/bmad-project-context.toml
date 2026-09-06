@@ -1,0 +1,53 @@
+# Customization overrides for bmad-project-context.
+# See _bmad/custom/README.md for merge rules.
+
+[workflow]
+
+# Standing facts loaded before the skill interviews the user.
+persistent_facts = [
+  """General project standards:
+
+  Architecture:
+  - Clean Architecture + SOLID + CQRS when applicable
+  - One use case per controller operation — use case owns find, validate, transform, persist
+  - Domain exceptions thrown by use cases, mapped to HTTP by global exception handlers
+
+  REST conventions:
+  - HATEOAS — responses include _links with relative paths
+  - Request/Response wrappers — requests: {"data": ...}, responses: {"data": ..., "_links": ...}
+
+  Error handling:
+  - Error responses: {"errors": [{"code": "...", "title": "...", "detail": "..."}]}
+
+  Testing:
+  - Test pyramid: unit > integration > contract > component
+  """,
+
+  """Java project standards:
+
+  Architecture:
+  - Layers: entrypoint → core → dataprovider
+  - Core must not import Spring, MongoDB, persistence, or OpenAPI annotations
+
+  Domain models:
+  - No Lombok @Setter; use explicit methods for encapsulation
+  - Use Lombok @Builder for constructors
+  - Use @RestControllerAdvice for global exception handling
+
+  Mappers:
+  - All mappers use MapStruct with componentModel = "spring"
+  - MapStruct processor must run after Lombok in build config
+
+  Utilities:
+  - Use Lombok @UtilityClass for utility classes with static methods
+
+  Testing:
+  - All tests use Spock Framework (Groovy), not JUnit
+  - Test files go in src/test/groovy/ with same package structure as source
+  - Mock with Spock stubs/mocks, no Spring context for unit tests
+
+  Build:
+  - OpenAPI codegen overwrites generated code on every build — edit contract yaml only
+  - MapStruct processor must run after Lombok — order explicitly in pom.xml
+  """,
+]
