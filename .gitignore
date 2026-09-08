@@ -2,3 +2,9 @@
 .bmad-loop/cache/
 .bmad-loop/policy.toml
 _bmad/render/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
