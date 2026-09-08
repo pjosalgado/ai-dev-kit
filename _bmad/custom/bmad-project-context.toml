@@ -5,49 +5,100 @@
 
 # Standing facts loaded before the skill interviews the user.
 persistent_facts = [
-  """General project standards:
+  """
+  ## Design Patterns — Project Detection
 
-  Architecture:
-  - Clean Architecture + SOLID + CQRS when applicable
-  - One use case per controller operation — use case owns find, validate, transform, persist
-  - Domain exceptions thrown by use cases, mapped to HTTP by global exception handlers
+  The following design patterns and practices should be included in the generated AGENTS.md when evidence is found in the codebase.
 
-  REST conventions:
-  - HATEOAS — responses include _links with relative paths
-  - Request/Response wrappers — requests: {"data": ...}, responses: {"data": ..., "_links": ...}
-
-  Error handling:
-  - Error responses: {"errors": [{"code": "...", "title": "...", "detail": "..."}]}
-
-  Testing:
-  - Test pyramid: unit > integration > contract > component
+  For each pattern category below:
+  1. Scan the project for evidence (directory structure, imports, config files, code conventions).
+  2. If EVIDENCE FOUND → include the pattern rules in the generated AGENTS.md.
+  3. If NO EVIDENCE → inform the user in chat: "The [category] patterns were considered but not identified in this project. They will not be included in AGENTS.md. Let me know if you'd like to add them anyway."
+  4. If GREENFIELD (no source code yet) → ask the user: "This appears to be a new project. Would you like to include these patterns in AGENTS.md for future development? They will guide AI agents but are not yet implemented." If yes, include them.
   """,
 
-  """Java project standards:
+  """
+  ## Architecture Patterns
 
-  Architecture:
-  - Layers: entrypoint → core → dataprovider
-  - Core must not import Spring, MongoDB, persistence, or OpenAPI annotations
+  Evidence to look for: layered directory structure (entrypoint/core/dataprovider or similar), boundary/port interfaces, dependency inversion patterns, framework isolation in domain layer.
 
-  Domain models:
-  - No Lombok @Setter; use explicit methods for encapsulation
-  - Use Lombok @Builder for constructors
-  - Use @RestControllerAdvice for global exception handling
+  Include if found:
+  - Clean Architecture + SOLID + CQRS
+  - Layers separating controllers, use cases, and gateway implementations
+  - Domain/core layer with zero framework dependencies
+  - Dependency inversion via boundary interfaces
+  - All external service access through boundary interfaces
+  """,
 
-  Mappers:
-  - All mappers use MapStruct with componentModel = "spring"
-  - MapStruct processor must run after Lombok in build config
+  """
+  ## Domain Model Patterns
 
-  Utilities:
-  - Use Lombok @UtilityClass for utility classes with static methods
+  Evidence to look for: domain classes without public setters, explicit state-change methods, value objects using records or builders.
 
-  Testing:
-  - All tests use Spock Framework (Groovy), not JUnit
-  - Test files go in src/test/groovy/ with same package structure as source
-  - Mock with Spock stubs/mocks, no Spring context for unit tests
+  Include if found:
+  - No public setters on domain models
+  - Explicit methods for state changes
+  - Value objects use records or builder pattern
+  """,
 
-  Build:
-  - OpenAPI codegen overwrites generated code on every build — edit contract yaml only
-  - MapStruct processor must run after Lombok — order explicitly in pom.xml
+  """
+  ## Convention Patterns
+
+  Evidence to look for: one use case per controller, parameter wrapping in records, externalized config classes, async event publishing via boundaries, HTTP clients, caching with TTL, utility classes with private constructors.
+
+  Include if found:
+  - One use case per controller operation
+  - Method parameters wrapped in records (max one per method)
+  - Externalized config via dedicated config classes
+  - Async events published via boundary interfaces
+  - External API clients use framework-provided HTTP client
+  - Caching via boundary interface with configurable TTL
+  - Utility classes: final class with private constructor
+  """,
+
+  """
+  ## Mapper Patterns
+
+  Evidence to look for: MapStruct or similar mapper library with framework component model, explicit build processor ordering.
+
+  Include if found:
+  - Mapper library with framework component model
+  - Mapper processor ordered after code-generation processor in build config
+  """,
+
+  """
+  ## REST API Patterns
+
+  Evidence to look for: HATEOAS links in responses, request/response wrappers, error response structure, global exception handlers.
+
+  Include if found:
+  - HATEOAS responses with _links
+  - Request wrapper: {"data": ...}
+  - Response wrapper: {"data": ..., "_links": ...}
+  - Error response: {"errors": [{"code": "...", "title": "...", "detail": "..."}]}
+  - Domain exceptions mapped to HTTP by global exception handlers
+  """,
+
+  """
+  ## Testing Patterns
+
+  Evidence to look for: test framework (Spock, JUnit, etc.), test directory mirroring source, unit/contract/component test separation.
+
+  Include if found:
+  - Consistent test framework across the project
+  - Test files mirror source package structure
+  - Unit tests: pure logic, no application context
+  - Contract tests: validate against API contract
+  - Component tests: full-stack through all layers
+  """,
+
+  """
+  ## Build Patterns
+
+  Evidence to look for: code generation configs (OpenAPI, AsyncAPI, protobuf), explicit processor ordering in build files.
+
+  Include if found:
+  - Code-generated sources overwrite on build — edit contract/config files only
+  - Build processors must run in correct order — verify in build config
   """,
 ]
