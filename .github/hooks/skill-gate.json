@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hooks": {
+    "userPromptSubmitted": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/scripts/hook-user-prompt.sh",
+        "cwd": ".",
+        "timeoutSec": 10
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/scripts/hook-post-tool-use.sh",
+        "cwd": ".",
+        "timeoutSec": 900
+      }
+    ]
+  }
+}

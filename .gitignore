@@ -3,6 +3,9 @@
 .bmad-loop/policy.toml
 _bmad/render/
 
+### Copilot test gate runtime ###
+.github/hooks/.runtime/
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

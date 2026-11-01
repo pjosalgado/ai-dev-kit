@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hooks": {
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/scripts/hook-agent-stop.sh",
+        "cwd": ".",
+        "timeoutSec": 900
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "bash": ".github/hooks/scripts/hook-agent-stop.sh",
+        "cwd": ".",
+        "timeoutSec": 900
+      }
+    ]
+  }
+}
