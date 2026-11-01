@@ -19,3 +19,8 @@ If option 2, provide the project path (e.g. /home/user/my-project)."
 
 If option 1: proceed with the customization task.
 If option 2: switch working directory to the provided project path, then immediately read and load any AI instruction files from it (AGENTS.md, CLAUDE.md, .opencode/ config, .agents/, etc.) before proceeding.
+
+## After a BMAD update
+
+After any BMAD install/update, run `ls -d .agents/skills/bmad-ux .agents/skills/bmad-agent-ux-designer 2>/dev/null`.
+If either reappeared, warn the user and suggest removing it again (skill dir, command pointer, and `_bmad/_config/` rows) — never delete without approval.
